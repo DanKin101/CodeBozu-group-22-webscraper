@@ -23,6 +23,15 @@ def birthplace():
 
     return politician_birthplace
 
+def store_info():
+    info = {
+        "Name": politician_name,
+        "Fullname": politician_fullname,
+        "Birthday": politician_birthday,
+        "Birthlpace": politician_birthplace,
+        "Political Party": politician_party,
+    }
+    president_info.append(info)
 
 president_info = []
 centuries = ["19th","20th","21st"]
@@ -50,38 +59,22 @@ for century in centuries:
                 party = politician_label.index(label)
 
         data = politician_data[born].contents
-        
+
         if data[0].find("span") is None:
             politician_name = data_card.find("th", class_="infobox-above").text
             politician_fullname = data[0].text
             politician_birthday = data[3].text
             politician_party = politician_data[party].find("a").text
             politician_birthplace = birthplace()
-
-            info = {
-                "Name": politician_name,
-                "Fullname": politician_fullname,
-                "Birthday": politician_birthday,
-                "Birthlpace": politician_birthplace,
-                "Political Party": politician_party,
-            }
-            president_info.append(info)
+            store_info()
         else:
             politician_name = data_card.find("th", class_="infobox-above").text
             politician_fullname = politician_name
             politician_birthday = data[1]
             politician_party = politician_data[party].find("a").text
             politician_birthplace = birthplace()
+            store_info()
 
-            info = {
-                "Name": politician_name,
-                "Fullname": politician_fullname,
-                "Birthday": politician_birthday,
-                "Birthlpace": politician_birthplace,
-                "Political Party": politician_party,
-            }
-            president_info.append(info)
 
 df = pd.DataFrame(president_info)
 df.to_csv("data.csv")
-
